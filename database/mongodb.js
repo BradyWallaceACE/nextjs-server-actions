@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const connectDB = () => {
   if (mongoose.connections[0].readyState) {
-    console.log("MongoDB is already connected");
+    console.log("MongoDB is connected");
     return;
   }
 

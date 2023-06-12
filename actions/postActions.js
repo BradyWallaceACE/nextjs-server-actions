@@ -32,3 +32,19 @@ export async function getAllPosts() {
     throw new Error(error.message || "Failed to retrieve posts!");
   }
 }
+
+export async function updatePost({ title, image, id }) {
+  try {
+    const post = await Post.findByIdAndUpdate(
+      id,
+      { title, image },
+      { new: true }
+    );
+
+    revalidatePath("/");
+
+    return { ...post._doc, id: post._id.toString() };
+  } catch (error) {
+    throw new Error(error.message || "Failed to update post!");
+  }
+}

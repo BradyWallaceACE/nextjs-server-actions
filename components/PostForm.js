@@ -1,17 +1,24 @@
 "use client";
 import React, { useRef } from "react";
-import { createPost } from "@/actions/postActions";
+import { createPost, updatePost } from "@/actions/postActions";
 import ButtonSubmit from "./ButtonSubmit";
+import { useMyContext } from "@/context/Provider";
 
 const PostForm = () => {
   const formRef = useRef();
+  const { editPost, setEditPost } = useMyContext();
 
   async function handleAction(formData) {
     const title = formData.get("title");
     const image = formData.get("image");
 
-    await createPost({ title, image });
+    if (editPost) {
+      await updatePost({ title, image, id: editPost._id });
+    } else {
+      await createPost({ title, image });
+    }
 
+    setEditPost();
     formRef.current.reset();
   }
 
@@ -21,11 +28,32 @@ const PostForm = () => {
       action={handleAction}
       ref={formRef}
     >
-      <input type="text" name="title" placeholder="title" required />
+      <input
+        type="text"
+        name="title"
+        placeholder="title"
+        required
+        defaultValue={editPost?.title}
+      />
 
-      <input type="text" name="image" placeholder="image" required />
+      <input
+        type="text"
+        name="image"
+        placeholder="image"
+        required
+        defaultValue={editPost?.image}
+      />
 
-      <ButtonSubmit value="Create" />
+      {editPost ? (
+        <>
+          <ButtonSubmit value="Update" />
+          <button type="button" onClick={() => setEditPost()}>
+            Cancel
+          </button>
+        </>
+      ) : (
+        <ButtonSubmit value="Create" />
+      )}
     </form>
   );
 };
