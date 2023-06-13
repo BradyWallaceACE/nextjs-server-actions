@@ -5,9 +5,11 @@ import { revalidatePath } from "next/cache";
 
 connectDB();
 
-export async function getAllPosts() {
+export async function getAllPosts(searchParams) {
+  const search = searchParams.search || "";
+
   try {
-    const posts = await Post.find();
+    const posts = await Post.find({ title: { $regex: search } });
 
     const newData = posts.map((post) => ({
       ...post._doc,

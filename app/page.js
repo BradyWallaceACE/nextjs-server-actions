@@ -2,9 +2,10 @@ import React from "react";
 import PostForm from "../components/PostForm";
 import { getAllPosts } from "@/actions/postActions";
 import PostList from "@/components/PostList";
+import Feature from "@/components/Feature";
 
-const Home = async () => {
-  const { posts } = await getAllPosts();
+const Home = async ({ params, searchParams }) => {
+  const { posts } = await getAllPosts(searchParams);
 
   return (
     <div>
@@ -12,6 +13,8 @@ const Home = async () => {
       <h2>C.R.U.D + Sort + Search + Pagintion</h2>
 
       <PostForm />
+
+      <Feature />
 
       {posts && <PostList posts={posts} />}
     </div>
