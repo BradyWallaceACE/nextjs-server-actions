@@ -1,11 +1,20 @@
 "use client";
-import React from "react";
+import React, { useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useMyContext } from "@/context/Provider";
+import { deletePost } from "@/actions/postActions";
 
 const PostCard = ({ post }) => {
   const { setEditPost } = useMyContext();
+  let [isPending, startTransition] = useTransition();
+
+  async function handleDelete(postId) {
+    if (window.confirm("Do you want to delete this post?")) {
+      await deletePost(postId);
+    }
+  }
+
   return (
     <div>
       <Link href="/">
@@ -20,7 +29,12 @@ const PostCard = ({ post }) => {
       </Link>
       <div style={{ display: "flex", gap: 20 }}>
         <button onClick={() => setEditPost(post)}>Edit</button>
-        <button>Delete</button>
+        <button
+          onClick={() => startTransition(() => handleDelete(post._id))}
+          disabled={isPending}
+        >
+          {isPending ? "Loading..." : "Delete"}
+        </button>
       </div>
     </div>
   );

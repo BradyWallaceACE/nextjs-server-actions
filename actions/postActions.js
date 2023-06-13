@@ -48,3 +48,15 @@ export async function updatePost({ title, image, id }) {
     throw new Error(error.message || "Failed to update post!");
   }
 }
+
+export async function deletePost(postId) {
+  try {
+    const post = await Post.findByIdAndDelete(postId, { new: true });
+
+    revalidatePath("/");
+
+    return { ...post._doc, id: post._id.toString() };
+  } catch (error) {
+    throw new Error(error.message || "Failed to delete post!");
+  }
+}
