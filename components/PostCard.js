@@ -5,15 +5,15 @@ import Image from "next/image";
 import { useMyContext } from "@/context/Provider";
 import { deletePost } from "@/actions/postActions";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, handleDelete }) => {
   const { setEditPost } = useMyContext();
   let [isPending, startTransition] = useTransition();
 
-  async function handleDelete(postId) {
-    if (window.confirm("Do you want to delete this post?")) {
-      await deletePost(postId);
-    }
-  }
+  //   async function handleDelete(postId) {
+  //     if (window.confirm("Do you want to delete this post?")) {
+  //       await deletePost(postId);
+  //     }
+  //   }
 
   return (
     <div>
