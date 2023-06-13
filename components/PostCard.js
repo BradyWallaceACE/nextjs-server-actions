@@ -17,7 +17,7 @@ const PostCard = ({ post, handleDelete }) => {
 
   return (
     <div>
-      <Link href="/">
+      <Link href={`/post/${post._id}`}>
         <Image
           src={post?.image}
           alt="image"

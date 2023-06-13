@@ -5,19 +5,6 @@ import { revalidatePath } from "next/cache";
 
 connectDB();
 
-export async function createPost(data) {
-  try {
-    const newPost = new Post(data);
-    await newPost.save();
-
-    revalidatePath("/");
-
-    return { ...newPost._doc, id: newPost._id.toString() };
-  } catch (error) {
-    throw new Error(error.message || "Failed to create post!");
-  }
-}
-
 export async function getAllPosts() {
   try {
     const posts = await Post.find();
@@ -30,6 +17,29 @@ export async function getAllPosts() {
     return { posts: newData };
   } catch (error) {
     throw new Error(error.message || "Failed to retrieve posts!");
+  }
+}
+
+export async function getOnePost(postId) {
+  try {
+    const post = await Post.findById(postId);
+
+    return { ...post._doc, _id: post._doc._id.toString() };
+  } catch (error) {
+    throw new Error(error.message || "Failed to retrieve post!");
+  }
+}
+
+export async function createPost(data) {
+  try {
+    const newPost = new Post(data);
+    await newPost.save();
+
+    revalidatePath("/");
+
+    return { ...newPost._doc, id: newPost._id.toString() };
+  } catch (error) {
+    throw new Error(error.message || "Failed to create post!");
   }
 }
 
