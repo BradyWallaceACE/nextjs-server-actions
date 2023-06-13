@@ -8,7 +8,7 @@ const SearchForm = () => {
 
   async function handleSearch(formData) {
     const search = formData.get("search");
-    pushQuery({ search });
+    pushQuery({ search, page: 1 });
   }
 
   return (
